@@ -1,12 +1,40 @@
-import config
-import train_model
+import gc
+import librosa
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.io as pio
+import random
+import time
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from copy import deepcopy
+from glob import glob
+from plotly.subplots import make_subplots
+from scipy.signal import butter, lfilter
+from torch.utils.data import DataLoader, Dataset, Subset
+from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-def pipeline(train,test,config, model,num_epochs, save: bool = True,save_dir:str, verbose: bool = True):
+import config
+from preprocessing_functions import *
+from train import train_model
+from predict import predict_imu
+from model import lstm_res
+from CustomData import CustomDataset
+
+def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
 
   df_train = pd.read_csv(config.TRAIN_CSV)
   df_test = pd.read_csv(config.TEST_CSV)
-
+  
+  df_train["target"] = df_train["gesture"].map(config.label_to_num)
+  
   demo = df_train[['sequence_id','target']].drop_duplicates()
     
   train_seq, val_seq, train_y, val_y = train_test_split(
@@ -107,6 +135,11 @@ def pipeline(train,test,config, model,num_epochs, save: bool = True,save_dir:str
   print("########Model fitting and predicting Complete########"
   print("Accuracy:", acc)
   print(predict_test)
+
+if __name__ == "main":
+  model= lstm_res()
+  pipeline(config, model,num_epochs=20, save=True,save_dir= config.save_dir)
+  
 
 
  
