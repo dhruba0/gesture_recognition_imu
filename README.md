@@ -6,5 +6,6 @@ The notebook implements following paper's model architecture from scratch with s
 
 The model architecture is shown below:
 
-<img width="1071" height="441" alt="image" src="https://github.com/user-attachments/assets/9a080749-36e1-4040-857b-4425c76c55e0" />
+<img width="1032" height="521" alt="image" src="https://github.com/user-attachments/assets/50ddc878-2a73-47d9-8a97-2712b94a4ead" />
+
 
