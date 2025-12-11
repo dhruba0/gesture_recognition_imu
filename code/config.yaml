@@ -1,0 +1,25 @@
+MIXUP_PROB = 0.5
+
+TEST_CSV = "/data/test.csv"
+TRAIN_CSV = "/data/train.csv"
+
+label_to_num = {
+    'Above ear - pull hair': 0,  # < ------- TARGETS START
+    'Cheek - pinch skin': 1,
+    'Eyebrow - pull hair': 2,
+    'Eyelash - pull hair': 3,
+    'Forehead - pull hairline': 4,
+    'Forehead - scratch': 5,
+    'Neck - pinch skin': 6,
+    'Neck - scratch': 7,  # < ------- TARGETS END
+    'Drink from bottle/cup': 8,  # < ------- NON-TARGETS START
+    'Feel around in tray and pull out an object': 9,
+    'Glasses on/off': 10,
+    'Pinch knee/leg skin': 11,
+    'Pull air toward your face': 12,
+    'Scratch knee/leg skin': 13,
+    'Text on phone': 14,
+    'Wave hello': 15,
+    'Write name in air': 16,
+    'Write name on leg': 17  # < ------- NON-TARGETS END
+}
