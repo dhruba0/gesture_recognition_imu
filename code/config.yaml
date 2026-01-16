@@ -1,7 +1,8 @@
 MIXUP_PROB = 0.5
 
-TEST_CSV = "/data/test.csv"
-TRAIN_CSV = "/data/train.csv"
+kaggle_path = "dhrubajyotiguha15/cmi-gesture"
+TEST_CSV = "test.csv"
+TRAIN_CSV = "train.csv"
 
 label_to_num = {
     'Above ear - pull hair': 0,  # < ------- TARGETS START
