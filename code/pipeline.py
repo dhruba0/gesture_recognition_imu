@@ -20,6 +20,7 @@ from scipy.signal import butter, lfilter
 from torch.utils.data import DataLoader, Dataset, Subset
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
+import kagglehub
 
 import config
 from preprocessing_functions import *
@@ -30,8 +31,13 @@ from CustomData import CustomDataset
 
 def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
 
-  df_train = pd.read_csv(config.TRAIN_CSV)
-  df_test = pd.read_csv(config.TEST_CSV)
+  path = kagglehub.dataset_download(config.kaggle_path)
+  
+  train_filename = config.TRAIN_CSV
+  test_filename = config.TEST_CSV
+  
+  df_train = pd.read_csv(f"{path}/{train_filename}")
+  df_test = pd.read_csv(f"{path}/{t_filestename}")
   
   df_train["target"] = df_train["gesture"].map(config.label_to_num)
   
@@ -139,6 +145,7 @@ def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
 if __name__ == "main":
   model= lstm_res()
   pipeline(config, model,num_epochs=20, save=True,save_dir= config.save_dir)
+  print("pipeline ran successfully!!")
   
 
 
