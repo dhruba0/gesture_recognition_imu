@@ -1,4 +1,7 @@
-def train_model(model, train_loader,criterion, optimizer, num_epochs=10):
+import torch.nn.functional as F
+import torch
+
+def train_model(model, train_loader,criterion, optimizer, device,num_epochs):
     model.train()
 
     for epoch in range(num_epochs):
@@ -13,7 +16,7 @@ def train_model(model, train_loader,criterion, optimizer, num_epochs=10):
 
             optimizer.zero_grad()
             outputs = model(inputs)              
-            loss = loss = criterion(F.log_softmax(outputs, dim=1), targets)
+            loss = criterion(F.log_softmax(outputs, dim=1), targets)
 
             loss.backward()
             optimizer.step()

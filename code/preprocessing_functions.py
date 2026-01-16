@@ -1,3 +1,7 @@
+import numpy as np
+import torch
+
+
 def standard_scale(arr: np.ndarray) -> np.ndarray:
     means = np.nanmean(arr, axis=0)
     stds = np.nanstd(arr, axis=0)

@@ -21,25 +21,27 @@ from torch.utils.data import DataLoader, Dataset, Subset
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 import kagglehub
+from sklearn.metrics import accuracy_score
+import yaml
+import torch.optim as optim
 
-import config
 from preprocessing_functions import *
 from train import train_model
 from predict import predict_imu
 from model import lstm_res
 from CustomData import CustomDataset
 
-def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
+def pipeline(config,model,num_epochs, save_dir:str, save: bool = True):
 
-  path = kagglehub.dataset_download(config.kaggle_path)
+  path = kagglehub.dataset_download(config['kaggle_path'])
   
-  train_filename = config.TRAIN_CSV
-  test_filename = config.TEST_CSV
+  train_filename = config['TRAIN_CSV']
+  test_filename = config['TEST_CSV']
   
   df_train = pd.read_csv(f"{path}/{train_filename}")
-  df_test = pd.read_csv(f"{path}/{t_filestename}")
+  df_test = pd.read_csv(f"{path}/{test_filename}")
   
-  df_train["target"] = df_train["gesture"].map(config.label_to_num)
+  df_train["target"] = df_train["gesture"].map(config['label_to_num'])
   
   demo = df_train[['sequence_id','target']].drop_duplicates()
     
@@ -57,7 +59,7 @@ def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
   val = df_train[df_train.sequence_id.isin(val_seq)]
 
   train_X, train_y = [], []
-
+  imu_cols = ["acc_x", "acc_y", "acc_z", "rot_w", "rot_x", "rot_y", "rot_z"]
   for sequence_id in tqdm(train_seq):
       ds = train[train["sequence_id"] == sequence_id]
       X = ds[imu_cols].values
@@ -124,8 +126,11 @@ def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
   
   gc.collect()
   torch.cuda.empty_cache()
-  train_model(model, train_loader, config.criterion, config.optimizer, num_epochs=20)
+  optimizer= optim.Adam(model.parameters(), lr=0.005)   
+  criterion= nn.KLDivLoss(reduction="batchmean")
 
+  train_model(model, train_loader, criterion, optimizer, device,num_epochs=20)
+  print("model training done!!")
   if save == True:
     # save_dir = "/kaggle/working"
     os.makedirs(save_dir, exist_ok=True)
@@ -138,13 +143,15 @@ def pipeline(config, model,num_epochs, save: bool = True,save_dir:str):
 
   acc = accuracy_score(val_y, predict_val)
 
-  print("########Model fitting and predicting Complete########"
+  print("########Model fitting and predicting Complete########")
   print("Accuracy:", acc)
   print(predict_test)
 
-if __name__ == "main":
+if __name__ == "__main__":
   model= lstm_res()
-  pipeline(config, model,num_epochs=20, save=True,save_dir= config.save_dir)
+  with open("code/config.yaml", "r") as file:
+      config = yaml.safe_load(file)
+  pipeline(config, model,num_epochs=20, save=True,save_dir= config['save_dir'])
   print("pipeline ran successfully!!")
   
 

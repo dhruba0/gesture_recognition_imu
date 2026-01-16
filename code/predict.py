@@ -1,4 +1,4 @@
-def predict_imu(model, loader, device=device):
+def predict_imu(model, loader, device):
     model.eval()
     all_preds = []
     all_probs = []
