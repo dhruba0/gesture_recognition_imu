@@ -1,3 +1,4 @@
+import torch
 def predict_imu(model, loader, device):
     model.eval()
     all_preds = []

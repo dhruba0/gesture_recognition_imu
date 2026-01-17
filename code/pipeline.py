@@ -129,7 +129,7 @@ def pipeline(config,model,num_epochs, save_dir:str, save: bool = True):
   optimizer= optim.Adam(model.parameters(), lr=0.005)   
   criterion= nn.KLDivLoss(reduction="batchmean")
 
-  train_model(model, train_loader, criterion, optimizer, device,num_epochs=20)
+  train_model(model, train_loader, criterion, optimizer, device,num_epochs=1)
   print("model training done!!")
   if save == True:
     # save_dir = "/kaggle/working"

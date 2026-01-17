@@ -9,3 +9,18 @@ The model architecture is shown below:
 <img width="1032" height="521" alt="image" src="https://github.com/user-attachments/assets/50ddc878-2a73-47d9-8a97-2712b94a4ead" />
 
 
+# Install the dependencies:
+
+Run the following : pip3 -r requirements.txt
+
+# Run the full pipeline
+
+Run the following : python3 code/pipeline.py 
+
+Model will be saved in output folder for reuse.
+
+
+
+
+
+
