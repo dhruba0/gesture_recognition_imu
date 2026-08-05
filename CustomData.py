@@ -31,7 +31,7 @@ class CustomDataset(Dataset):
         """
         sequence_id = self.indexes[i]
         p = np.random.rand()
-        if p <= 0.0:
+        if p <= 0.5:
             if self.mode == "train":
                 X, y = self.get_data(i)
                 X = self.transforms(X)
