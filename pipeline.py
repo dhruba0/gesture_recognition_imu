@@ -99,17 +99,17 @@ def pipeline(config,model,num_epochs, save_dir:str, save: bool = True):
       X = np.where(np.isnan(X), 0, X)  # fill NaNs
       test_X.append(X)
 
-  transforms = Compose([
-    OneOf([
-        GaussianNoise(p=0.5, max_noise_amplitude=0.05),
-        PinkNoiseSNR(p=0.5, min_snr=4.0, max_snr=20.0),
-        ButterFilter(p=0.5)
-    ]),
-    TimeStretch(p=0.25),
-    TimeShift(p=0.25)
+  # transforms = Compose([
+  #   OneOf([
+  #       GaussianNoise(p=0.5, max_noise_amplitude=0.05),
+  #       PinkNoiseSNR(p=0.5, min_snr=4.0, max_snr=20.0),
+  #       ButterFilter(p=0.5)
+  #   ]),
+  #   TimeStretch(p=0.25),
+  #   TimeShift(p=0.25)
 
-  ])
-  train_dataset = CustomDataset(config,train, train_X,  train_y, transforms, mode="train")
+  # ])
+  train_dataset = CustomDataset(config,train, train_X,  train_y, transforms= None, mode="train")
   val_dataset = CustomDataset(config,val, val_X,  val_y, mode="val")
   test_dataset =  CustomDataset(config,df = df_test,X = test_X,mode="test")
   
